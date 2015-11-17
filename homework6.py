@@ -48,7 +48,21 @@ class mux_2to1(circuit):
 		o0 = orgate(a0, a1)
 		
 		return o0.cir_func()
-		
+
+class mux_4to1(circuit):
+        def __init__(self, in1, in2, in3, in4, ctr1, ctr2):
+                self.in1_ = in1
+                self.in2_ = in2
+                self.in3_ = in3
+                self.in4_ = in4
+                self.ctr1_ = ctr1
+                self.ctr2_ = ctr2
+        def cir_func(self):
+                first_mux = mux_2to1(self.in1_, self.in2_, self.ctr1_).cir_func()
+                second_mux = mux_2to1(self.in3_, self.in4_, self.ctr1_).cir_func()
+                third_mux = mux_2to1(first_mux, second_mux, self.ctr2_).cir_func()
+                return third_mux
+
 #---------------------------------------------------------------
 # homework 6 due Tu 11/17/15 5:45pm
 
@@ -107,9 +121,9 @@ def main():
 		else:
 			input4_b[i] = False
 	
-	o_mux = mux_2to1(input1_b[0], input2_b[0], ctr_b[0]) 
+	turkey_mux = mux_4to1(input1_b[0], input2_b[0], input3_b[0], input4_b[0], ctr_b[0], ctr_b[1]) 
 	
-	output = o_mux.cir_func()
+	output = turkey_mux.cir_func()
 	
 	#---------------------------------------------------------------
 	# homework 6 due Tu 11/17/15 5:45pm
